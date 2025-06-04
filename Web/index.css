@@ -1,0 +1,147 @@
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.blink-red {
+  animation: blink 1s infinite;
+  color: red !important;
+  font-weight: bold;
+}
+
+@keyframes blink-scale {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.6); }
+}
+
+.blink-scale {
+  animation: blink-scale 1.2s infinite;
+  display: inline-block;
+  user-select: none;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://academy.nit-institute.com/wp-content/uploads/2022/07/Embedded-linux-advanced.jpg') no-repeat center center fixed;
+  background-size: cover;
+  text-align: center;
+  color: #eee;
+}
+
+h2 {
+  margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 10px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  font-size: 1.5rem;
+}
+
+.sensor-values {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding: 0 10px;
+}
+
+.sensor-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 200px;
+  height: 160px;
+  color: #111;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.sensor-card:hover {
+  transform: translateY(-5px);
+}
+
+.sensor-card h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: auto;
+}
+
+.sensor-card p {
+  font-size: 2rem;
+  transform: translateY(-30px);
+  font-weight: bold;
+}
+
+.emoji {
+  font-size: 1.8rem;
+  margin-right: 4px;
+}
+
+button {
+  margin-top: 6px;
+  padding: 6px 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.85rem;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#chart-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px 4px rgba(255, 255, 255, 0.5);
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sensorChart {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: transparent !important;
+  display: block;
+  margin: 0 auto;
+}
+
+#led2-status {
+  font-size: 2.2rem;
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  transform: none;
+}

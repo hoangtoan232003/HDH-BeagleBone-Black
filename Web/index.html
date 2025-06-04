@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sensor Dashboard</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <h2>🐧 BeagleBone-Sensor Dashboard</h2>
+
+  <div class="sensor-values">
+    <div class="sensor-card">
+      <h3><span class="emoji">🌡️</span> Temperature</h3>
+      <p id="temp">-- °C</p>
+    </div>
+    <div class="sensor-card">
+      <h3><span class="emoji">💧</span> Humidity</h3>
+      <p id="hum">-- %</p>
+    </div>
+    <div class="sensor-card">
+      <h3><span class="emoji">💡</span> Light</h3>
+      <p id="light">-- lux</p>
+    </div>
+    <div class="sensor-card">
+      <h3><span class="emoji">🔌</span> LED1</h3>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <p id="led1-status" style="font-size: 2rem; font-weight: bold; margin: 0;">--</p>
+        <button id="led1-toggle-btn">Button</button>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <h3><span class="emoji">🚨</span> LED2 (Warning)</h3>
+      <p id="led2-status"></p>
+    </div>
+  </div>
+
+  <div id="chart-container">
+    <canvas id="sensorChart" width="600" height="300"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="index.js"></script>
+</body>
+<audio id="alert-sound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+</html>

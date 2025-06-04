@@ -1,0 +1,43 @@
+#!/bin/sh
+case "$1" in
+    start)
+        echo "Loading drivers and starting app..."
+
+        insmod /lib/modules/bh1750.ko
+        insmod /lib/modules/led.ko
+        insmod /lib/modules/dht11.ko
+
+        # Mount các thư mục cần thiết cho chroot
+        mount --bind /dev /mnt/rootfs/dev
+        mount --bind /proc /mnt/rootfs/proc
+        mount --bind /sys /mnt/rootfs/sys
+
+        # Chạy app trong chroot với LD_LIBRARY_PATH trỏ thư mục chứa .so
+        chroot /mnt/rootfs /bin/sh -c "
+            export LD_LIBRARY_PATH=/root/app:\$LD_LIBRARY_PATH
+            /root/app/app &
+        "
+        ;;
+    stop)
+        echo "Stopping app and unloading drivers..."
+
+        chroot /mnt/rootfs /bin/sh -c "
+            pid=\$(pidof app)
+            if [ -n \"\$pid\" ]; then
+                kill -9 \$pid
+            fi
+        "
+
+        sleep 2
+
+        rmmod -f bh1750 || true
+        rmmod -f led || true
+        rmmod -f dht11 || true
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+
+exit 0

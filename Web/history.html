@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lịch sử Cảm biến & LED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #eee;
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url('https://academy.nit-institute.com/wp-content/uploads/2022/07/Embedded-linux-advanced.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .container {
+    flex: 1;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 40px 20px 60px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 10px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    font-size: 1.5rem;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.15);
+    flex: 1 1 600px;
+    max-width: 800px;
+    color: #111;
+    font-size: 1.1rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  th, td {
+    padding: 16px 20px;
+    font-size: 1rem;
+  }
+
+  th {
+    background-color: #10b981;
+    color: white;
+    font-weight: 700;
+  }
+
+  tr:hover {
+    background-color: #f0fdf4;
+  }
+
+  @media (max-width: 650px) {
+    .container {
+      flex-direction: column;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .card {
+      max-width: 100%;
+    }
+
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    tr {
+      margin-bottom: 15px;
+    }
+
+    td {
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+    }
+
+    td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 15px;
+      width: 45%;
+      white-space: nowrap;
+      font-weight: bold;
+      text-align: left;
+    }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .blink-red {
+    animation: blink 1s infinite;
+    color: red !important;
+    font-weight: bold;
+  }
+
+  @keyframes blink-scale {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.6); }
+  }
+
+  .blink-scale {
+    animation: blink-scale 1.2s infinite;
+    display: inline-block;
+    user-select: none;
+    font-size: 2.2rem;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+  <header>
+    Hệ thống Giám sát Cảm biến & Đèn LED
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Lịch sử Dữ liệu Cảm biến</h2>
+      <table id="sensor-table">
+        <thead>
+          <tr>
+            <th>Nhiệt độ (°C)</th>
+            <th>Độ ẩm (%)</th>
+            <th>Ánh sáng (lux)</th>
+            <th>Thời gian</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Lịch sử Trạng thái LED</h2>
+      <table id="led-table">
+        <thead>
+          <tr>
+            <th>LED1</th>
+            <th>LED2</th>
+            <th>Thời gian</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData(url, tableId, columns) {
+      const res = await fetch(url);
+      const data = await res.json();
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = "";
+
+      data.forEach(item => {
+        const row = document.createElement("tr");
+        columns.forEach(col => {
+          const cell = document.createElement("td");
+          cell.setAttribute("data-label", col.charAt(0).toUpperCase() + col.slice(1));
+          cell.textContent = item[col];
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+      });
+    }
+
+    fetchData("http://localhost:5000/api/history_sensors", "sensor-table", ["temperature", "humidity", "lux", "timestamp"]);
+    fetchData("http://localhost:5000/api/history_led", "led-table", ["led1", "led2", "timestamp"]);
+  </script>
+</body>
+</html>
