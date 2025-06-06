@@ -1,0 +1,5 @@
+config BR2_PACKAGE_BEAGLEBONE
+    bool "beaglebone"
+    default n
+    help
+      App + drivers + autostart for BeagleBone Black
